@@ -1,12 +1,11 @@
 package com.akib.courseManagementSystem.service;
 
-import com.akib.courseManagementSystem.model.Instructor;
+import com.akib.courseManagementSystem.entity.Instructor;
 import com.akib.courseManagementSystem.repository.InstructorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class InstructorServiceImplementation implements InstructorService {

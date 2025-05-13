@@ -1,6 +1,6 @@
 package com.akib.courseManagementSystem.controller;
 
-import com.akib.courseManagementSystem.model.Instructor;
+import com.akib.courseManagementSystem.entity.Instructor;
 import com.akib.courseManagementSystem.service.InstructorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

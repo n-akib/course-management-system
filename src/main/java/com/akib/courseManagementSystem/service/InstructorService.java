@@ -1,6 +1,6 @@
 package com.akib.courseManagementSystem.service;
 
-import com.akib.courseManagementSystem.model.Instructor;
+import com.akib.courseManagementSystem.entity.Instructor;
 
 import java.util.List;
 
