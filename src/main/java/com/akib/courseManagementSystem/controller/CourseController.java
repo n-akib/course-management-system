@@ -44,4 +44,13 @@ public class CourseController {
         courseService.deleteCourse(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PostMapping("/{courseId}/instructor/{instructorId}")
+    public ResponseEntity<Course> assignInstructor(@PathVariable Long courseId, @PathVariable Long instructorId) {
+        return ResponseEntity.ok(courseService.assignInstructorToCourse(courseId, instructorId));
+    }
+    @PostMapping("/{courseId}/student/{studentId}")
+    public ResponseEntity<Course> enrollStudent(@PathVariable Long courseId, @PathVariable Long studentId) {
+        return ResponseEntity.ok(courseService.enrollStudentInCourse(courseId, studentId));
+    }
 }

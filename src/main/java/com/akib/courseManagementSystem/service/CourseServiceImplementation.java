@@ -1,7 +1,11 @@
 package com.akib.courseManagementSystem.service;
 
 import com.akib.courseManagementSystem.entity.Course;
+import com.akib.courseManagementSystem.entity.Instructor;
+import com.akib.courseManagementSystem.entity.Student;
 import com.akib.courseManagementSystem.repository.CourseRepository;
+import com.akib.courseManagementSystem.repository.InstructorRepository;
+import com.akib.courseManagementSystem.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +19,8 @@ import java.util.Optional;
 public class CourseServiceImplementation implements CourseService {
     private static final Logger logger = LoggerFactory.getLogger(CourseServiceImplementation.class);
     private final CourseRepository courseRepository;
+    private final InstructorRepository instructorRepository;
+    private final StudentRepository studentRepository;
 
     @Override
     public Course saveCourse(Course course) {
@@ -50,5 +56,27 @@ public class CourseServiceImplementation implements CourseService {
     public void deleteCourse(Long id) {
         logger.info("Deleting course with ID: {}", id);
         courseRepository.deleteById(id);
+    }
+
+    @Override
+    public Course assignInstructorToCourse(Long courseId, Long instructorId) {
+        logger.info("Assigning instructor {} to course {}", instructorId, courseId);
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new RuntimeException("Course not found with ID: " + courseId));
+        Instructor instructor = instructorRepository.findById(instructorId)
+                .orElseThrow(() -> new RuntimeException("Instructor not found with ID: " + instructorId));
+        course.setInstructor(instructor);
+        return courseRepository.save(course);
+    }
+
+    @Override
+    public Course enrollStudentInCourse(Long courseId, Long studentId) {
+        logger.info("Enrolling student {} in course {}", studentId, courseId);
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new RuntimeException("Course not found with ID: " + courseId));
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new RuntimeException("Student not found with ID: " + studentId));
+        course.getStudents().add(student);
+        return courseRepository.save(course);
     }
 }

@@ -11,4 +11,6 @@ public interface CourseService {
     Optional<Course> getCourseById(Long id);
     Course updateCourse(Long id, Course updatedCourse);
     void deleteCourse(Long id);
+    Course assignInstructorToCourse(Long courseId, Long studentid);
+    Course enrollStudentInCourse(Long courseId, Long studentid);
 }
