@@ -1,6 +1,7 @@
 package com.akib.courseManagementSystem.controller;
 
 import com.akib.courseManagementSystem.entity.Course;
+import com.akib.courseManagementSystem.entity.Student;
 import com.akib.courseManagementSystem.service.CourseService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -52,5 +53,15 @@ public class CourseController {
     @PostMapping("/{courseId}/student/{studentId}")
     public ResponseEntity<Course> enrollStudent(@PathVariable Long courseId, @PathVariable Long studentId) {
         return ResponseEntity.ok(courseService.enrollStudentInCourse(courseId, studentId));
+    }
+
+    @GetMapping("/instructor/{instructorId}")
+    public ResponseEntity<List<Course>> getCoursesByInstructor(@PathVariable Long instructorId) {
+        return ResponseEntity.ok(courseService.getCoursesByInstructor(instructorId));
+    }
+
+    @GetMapping("/{courseId}/students")
+    public ResponseEntity<List<Student>> getStudentsInCourse(@PathVariable Long courseId) {
+        return ResponseEntity.ok(courseService.getStudentsInCourse(courseId));
     }
 }

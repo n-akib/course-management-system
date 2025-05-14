@@ -79,4 +79,18 @@ public class CourseServiceImplementation implements CourseService {
         course.getStudents().add(student);
         return courseRepository.save(course);
     }
+
+    @Override
+    public List<Course> getCoursesByInstructor(Long instructorId) {
+        logger.info("Fetching courses for instructor ID: {}", instructorId);
+        return courseRepository.findByInstructorId(instructorId);
+    }
+
+    @Override
+    public List<Student> getStudentsInCourse(Long courseId) {
+        logger.info("Fetching students for course ID: {}", courseId);
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new RuntimeException("Course not found with ID: " + courseId));
+        return course.getStudents();
+    }
 }
