@@ -3,7 +3,9 @@
 -- Author: Nagib Mahfuze Akib
 -- Date: 2025-05-14
 
-CREATE TABLE course_student (
+CREATE SCHEMA IF NOT EXISTS cms;
+
+CREATE TABLE cms.course_student (
     course_id BIGINT,                     -- Foreign key referencing the 'courses' table
     student_id BIGINT,                    -- Foreign key referencing the 'students' table
     PRIMARY KEY (course_id, student_id),  -- Composite primary key (course_id, student_id)

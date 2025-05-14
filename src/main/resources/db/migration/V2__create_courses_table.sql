@@ -3,7 +3,9 @@
 -- Author: Nagib Mahfuze Akib
 -- Date: 2025-05-14
 
-CREATE TABLE courses (
+CREATE SCHEMA IF NOT EXISTS cms;
+
+CREATE TABLE cms.courses (
     id BIGSERIAL PRIMARY KEY,                           -- Auto-incremented primary key
     title VARCHAR(255) NOT NULL,                        -- Course title
     description TEXT,                                   -- Course description
