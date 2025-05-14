@@ -6,8 +6,17 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * Repository interface for performing CRUD operations on Course entities.
+ * Extends JpaRepository to provide standard database operations and custom queries.
+ */
 @Repository
 public interface CourseRepository extends JpaRepository<Course, Long> {
-    // Add custom query methods if needed
+    /**
+     * Retrieves a list of courses taught by a specific instructor.
+     *
+     * @param instructorId The ID of the instructor.
+     * @return A list of Course entities associated with the specified instructor.
+     */
     List<Course> findByInstructorId(Long instructorId);
 }

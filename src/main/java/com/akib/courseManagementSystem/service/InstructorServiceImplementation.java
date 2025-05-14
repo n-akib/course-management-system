@@ -10,15 +10,29 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Implementation of the InstructorService interface.
+ * Handles business logic related to instructor management including
+ * creating, retrieving, updating, and deleting instructor records.
+ */
 @Service
 public class InstructorServiceImplementation implements InstructorService {
+
     private static final Logger logger = LoggerFactory.getLogger(InstructorServiceImplementation.class);
     private final InstructorRepository instructorRepository;
 
+    /**
+     * Constructor for dependency injection of InstructorRepository.
+     *
+     * @param instructorRepository the repository used for instructor persistence operations.
+     */
     public InstructorServiceImplementation(InstructorRepository instructorRepository) {
         this.instructorRepository = instructorRepository;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InstructorDTO createInstructor(InstructorDTO instructorDTO) {
         logger.info("Creating instructor: {}", instructorDTO.getName());
@@ -29,6 +43,9 @@ public class InstructorServiceImplementation implements InstructorService {
         return toDTO(savedInstructor);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<InstructorDTO> getAllInstructors() {
         logger.info("Fetching all instructors");
@@ -37,6 +54,9 @@ public class InstructorServiceImplementation implements InstructorService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InstructorDTO getInstructorById(Long id) {
         logger.info("Fetching instructor with ID: {}", id);
@@ -45,6 +65,9 @@ public class InstructorServiceImplementation implements InstructorService {
         return toDTO(instructor);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InstructorDTO updateInstructor(Long id, InstructorDTO instructorDTO) {
         logger.info("Updating instructor with ID: {}", id);
@@ -56,12 +79,21 @@ public class InstructorServiceImplementation implements InstructorService {
         return toDTO(updatedInstructor);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void deleteInstructor(Long id) {
         logger.info("Deleting instructor with ID: {}", id);
         instructorRepository.deleteById(id);
     }
 
+    /**
+     * Converts an Instructor entity to a DTO.
+     *
+     * @param instructor the Instructor entity to convert.
+     * @return the corresponding InstructorDTO.
+     */
     private InstructorDTO toDTO(Instructor instructor) {
         InstructorDTO dto = new InstructorDTO();
         dto.setId(instructor.getId());

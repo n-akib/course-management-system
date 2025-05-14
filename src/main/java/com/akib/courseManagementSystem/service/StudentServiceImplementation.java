@@ -10,15 +10,28 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Implementation of the StudentService interface.
+ * Handles business logic related to Student operations.
+ */
 @Service
 public class StudentServiceImplementation implements StudentService {
+
     private static final Logger logger = LoggerFactory.getLogger(StudentServiceImplementation.class);
     private final StudentRepository studentRepository;
 
+    /**
+     * Constructor for injecting the StudentRepository.
+     *
+     * @param studentRepository the repository used for student persistence operations
+     */
     public StudentServiceImplementation(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StudentDTO createStudent(StudentDTO studentDTO) {
         logger.info("Creating student: {}", studentDTO.getName());
@@ -29,6 +42,9 @@ public class StudentServiceImplementation implements StudentService {
         return toDTO(savedStudent);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<StudentDTO> getAllStudents() {
         logger.info("Fetching all students");
@@ -37,6 +53,9 @@ public class StudentServiceImplementation implements StudentService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StudentDTO getStudentById(Long id) {
         logger.info("Fetching student with ID: {}", id);
@@ -45,6 +64,9 @@ public class StudentServiceImplementation implements StudentService {
         return toDTO(student);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StudentDTO updateStudent(Long id, StudentDTO studentDTO) {
         logger.info("Updating student with ID: {}", id);
@@ -56,12 +78,21 @@ public class StudentServiceImplementation implements StudentService {
         return toDTO(updatedStudent);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void deleteStudent(Long id) {
         logger.info("Deleting student with ID: {}", id);
         studentRepository.deleteById(id);
     }
 
+    /**
+     * Converts a Student entity to a StudentDTO.
+     *
+     * @param student the Student entity
+     * @return the corresponding StudentDTO
+     */
     private StudentDTO toDTO(Student student) {
         StudentDTO dto = new StudentDTO();
         dto.setId(student.getId());
