@@ -1,13 +1,13 @@
 package com.akib.courseManagementSystem.service;
 
-import com.akib.courseManagementSystem.entity.Student;
+import com.akib.courseManagementSystem.dto.StudentDTO;
 
 import java.util.List;
 
 public interface StudentService {
-    Student createStudent(Student student);
-    List<Student> getAllStudents();
-    Student getStudentById(Long id);
-    Student updateStudent(Long id, Student student);
+    StudentDTO createStudent(StudentDTO studentDTO);
+    List<StudentDTO> getAllStudents();
+    StudentDTO getStudentById(Long id);
+    StudentDTO updateStudent(Long id, StudentDTO studentDTO);
     void deleteStudent(Long id);
 }

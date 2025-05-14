@@ -1,5 +1,6 @@
 package com.akib.courseManagementSystem.service;
 
+import com.akib.courseManagementSystem.dto.CourseDTO;
 import com.akib.courseManagementSystem.entity.Course;
 import com.akib.courseManagementSystem.entity.Instructor;
 import com.akib.courseManagementSystem.entity.Student;
@@ -13,42 +14,48 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class CourseServiceImplementation implements CourseService {
-    private static final Logger logger = LoggerFactory.getLogger(CourseServiceImplementation.class);
+public class CourseServiceImpl implements CourseService {
+    private static final Logger logger = LoggerFactory.getLogger(CourseServiceImpl.class);
     private final CourseRepository courseRepository;
     private final InstructorRepository instructorRepository;
     private final StudentRepository studentRepository;
 
     @Override
-    public Course saveCourse(Course course) {
-        logger.info("Saving course: {}", course.getTitle());
-        return courseRepository.save(course);
+    public CourseDTO saveCourse(CourseDTO courseDTO) {
+        logger.info("Saving course: {}", courseDTO.getTitle());
+        Course course = toEntity(courseDTO);
+        Course savedCourse = courseRepository.save(course);
+        return toDTO(savedCourse);
     }
 
     @Override
-    public List<Course> getAllCourses() {
+    public List<CourseDTO> getAllCourses() {
         logger.info("Fetching all courses");
-        return courseRepository.findAll();
+        return courseRepository.findAll().stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Optional<Course> getCourseById(Long id) {
+    public Optional<CourseDTO> getCourseById(Long id) {
         logger.info("Fetching course with ID: {}", id);
-        return courseRepository.findById(id);
+        return courseRepository.findById(id).map(this::toDTO);
     }
 
     @Override
-    public Course updateCourse(Long id, Course updatedCourse) {
+    public CourseDTO updateCourse(Long id, CourseDTO courseDTO) {
         logger.info("Updating course with ID: {}", id);
         return courseRepository.findById(id).map(course -> {
-            course.setTitle(updatedCourse.getTitle());
-            course.setDescription(updatedCourse.getDescription());
-            course.setStartDate(updatedCourse.getStartDate());
-            course.setEndDate(updatedCourse.getEndDate());
-            return courseRepository.save(course);
+            course.setTitle(courseDTO.getTitle());
+            course.setDescription(courseDTO.getDescription());
+            course.setStartDate(courseDTO.getStartDate());
+            course.setEndDate(courseDTO.getEndDate());
+            Course updatedCourse = courseRepository.save(course);
+            return toDTO(updatedCourse);
         }).orElse(null);
     }
 
@@ -59,31 +66,35 @@ public class CourseServiceImplementation implements CourseService {
     }
 
     @Override
-    public Course assignInstructorToCourse(Long courseId, Long instructorId) {
+    public CourseDTO assignInstructorToCourse(Long courseId, Long instructorId) {
         logger.info("Assigning instructor {} to course {}", instructorId, courseId);
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new RuntimeException("Course not found with ID: " + courseId));
         Instructor instructor = instructorRepository.findById(instructorId)
                 .orElseThrow(() -> new RuntimeException("Instructor not found with ID: " + instructorId));
         course.setInstructor(instructor);
-        return courseRepository.save(course);
+        Course updatedCourse = courseRepository.save(course);
+        return toDTO(updatedCourse);
     }
 
     @Override
-    public Course enrollStudentInCourse(Long courseId, Long studentId) {
+    public CourseDTO enrollStudentInCourse(Long courseId, Long studentId) {
         logger.info("Enrolling student {} in course {}", studentId, courseId);
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new RuntimeException("Course not found with ID: " + courseId));
         Student student = studentRepository.findById(studentId)
                 .orElseThrow(() -> new RuntimeException("Student not found with ID: " + studentId));
         course.getStudents().add(student);
-        return courseRepository.save(course);
+        Course updatedCourse = courseRepository.save(course);
+        return toDTO(updatedCourse);
     }
 
     @Override
-    public List<Course> getCoursesByInstructor(Long instructorId) {
+    public List<CourseDTO> getCoursesByInstructor(Long instructorId) {
         logger.info("Fetching courses for instructor ID: {}", instructorId);
-        return courseRepository.findByInstructorId(instructorId);
+        return courseRepository.findByInstructorId(instructorId).stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -92,5 +103,31 @@ public class CourseServiceImplementation implements CourseService {
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new RuntimeException("Course not found with ID: " + courseId));
         return course.getStudents();
+    }
+
+    private CourseDTO toDTO(Course course) {
+        CourseDTO dto = new CourseDTO();
+        dto.setId(course.getId());
+        dto.setTitle(course.getTitle());
+        dto.setDescription(course.getDescription());
+        dto.setStartDate(course.getStartDate());
+        dto.setEndDate(course.getEndDate());
+        if (course.getInstructor() != null) {
+            dto.setInstructorId(course.getInstructor().getId());
+        }
+        dto.setStudentIds(course.getStudents().stream()
+                .map(Student::getId)
+                .collect(Collectors.toList()));
+        return dto;
+    }
+
+    private Course toEntity(CourseDTO courseDTO) {
+        Course course = new Course();
+        course.setId(courseDTO.getId());
+        course.setTitle(courseDTO.getTitle());
+        course.setDescription(courseDTO.getDescription());
+        course.setStartDate(courseDTO.getStartDate());
+        course.setEndDate(courseDTO.getEndDate());
+        return course;
     }
 }

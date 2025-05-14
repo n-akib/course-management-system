@@ -1,13 +1,18 @@
 package com.akib.courseManagementSystem.service;
 
+import com.akib.courseManagementSystem.dto.StudentDTO;
 import com.akib.courseManagementSystem.entity.Student;
 import com.akib.courseManagementSystem.repository.StudentRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentServiceImplementation implements StudentService {
+    private static final Logger logger = LoggerFactory.getLogger(StudentServiceImplementation.class);
     private final StudentRepository studentRepository;
 
     public StudentServiceImplementation(StudentRepository studentRepository) {
@@ -15,31 +20,53 @@ public class StudentServiceImplementation implements StudentService {
     }
 
     @Override
-    public Student createStudent(Student student) {
-        return studentRepository.save(student);
+    public StudentDTO createStudent(StudentDTO studentDTO) {
+        logger.info("Creating student: {}", studentDTO.getName());
+        Student student = new Student();
+        student.setName(studentDTO.getName());
+        student.setEmail(studentDTO.getEmail());
+        Student savedStudent = studentRepository.save(student);
+        return toDTO(savedStudent);
     }
 
     @Override
-    public List<Student> getAllStudents() {
-        return studentRepository.findAll();
+    public List<StudentDTO> getAllStudents() {
+        logger.info("Fetching all students");
+        return studentRepository.findAll().stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Student getStudentById(Long id) {
-        return studentRepository.findById(id)
+    public StudentDTO getStudentById(Long id) {
+        logger.info("Fetching student with ID: {}", id);
+        Student student = studentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Student not found with ID: " + id));
+        return toDTO(student);
     }
 
     @Override
-    public Student updateStudent(Long id, Student updatedStudent) {
-        Student student = getStudentById(id);
-        student.setName(updatedStudent.getName());
-        student.setEmail(updatedStudent.getEmail());
-        return studentRepository.save(student);
+    public StudentDTO updateStudent(Long id, StudentDTO studentDTO) {
+        logger.info("Updating student with ID: {}", id);
+        Student student = studentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Student not found with ID: " + id));
+        student.setName(studentDTO.getName());
+        student.setEmail(studentDTO.getEmail());
+        Student updatedStudent = studentRepository.save(student);
+        return toDTO(updatedStudent);
     }
 
     @Override
     public void deleteStudent(Long id) {
+        logger.info("Deleting student with ID: {}", id);
         studentRepository.deleteById(id);
+    }
+
+    private StudentDTO toDTO(Student student) {
+        StudentDTO dto = new StudentDTO();
+        dto.setId(student.getId());
+        dto.setName(student.getName());
+        dto.setEmail(student.getEmail());
+        return dto;
     }
 }
