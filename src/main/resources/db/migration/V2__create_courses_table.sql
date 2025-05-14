@@ -3,5 +3,7 @@ CREATE TABLE courses (
     title VARCHAR(255) NOT NULL,
     description TEXT,
     start_date DATE,
-    end_date DATE
+    end_date DATE,
+    instructor_id BIGINT,
+    FOREIGN KEY (instructor_id) REFERENCES instructor(id)
 );
