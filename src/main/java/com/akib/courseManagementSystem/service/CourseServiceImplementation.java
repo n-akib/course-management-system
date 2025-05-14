@@ -1,6 +1,7 @@
 package com.akib.courseManagementSystem.service;
 
 import com.akib.courseManagementSystem.dto.CourseDTO;
+import com.akib.courseManagementSystem.dto.StudentDTO;
 import com.akib.courseManagementSystem.entity.Course;
 import com.akib.courseManagementSystem.entity.Instructor;
 import com.akib.courseManagementSystem.entity.Student;
@@ -18,8 +19,8 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class CourseServiceImpl implements CourseService {
-    private static final Logger logger = LoggerFactory.getLogger(CourseServiceImpl.class);
+public class CourseServiceImplementation implements CourseService {
+    private static final Logger logger = LoggerFactory.getLogger(CourseServiceImplementation.class);
     private final CourseRepository courseRepository;
     private final InstructorRepository instructorRepository;
     private final StudentRepository studentRepository;
@@ -98,11 +99,19 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<Student> getStudentsInCourse(Long courseId) {
+    public List<StudentDTO> getStudentsInCourse(Long courseId) {
         logger.info("Fetching students for course ID: {}", courseId);
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new RuntimeException("Course not found with ID: " + courseId));
-        return course.getStudents();
+        return course.getStudents().stream()
+                .map(student -> {
+                    StudentDTO dto = new StudentDTO();
+                    dto.setId(student.getId());
+                    dto.setName(student.getName());
+                    dto.setEmail(student.getEmail());
+                    return dto;
+                })
+                .collect(Collectors.toList());
     }
 
     private CourseDTO toDTO(Course course) {
