@@ -3,6 +3,7 @@ package com.akib.courseManagementSystem.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +36,12 @@ public class Instructor {
      */
     @Column(unique = true, nullable = false)
     private String email;
+
+    /**
+     * The deleted time of the instructor
+     */
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
 
     /**
      * List of courses taught by the instructor.

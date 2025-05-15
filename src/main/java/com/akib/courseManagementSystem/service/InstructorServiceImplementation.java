@@ -7,7 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional; // Required for Optional
 import java.util.stream.Collectors;
 
 /**
@@ -84,8 +86,11 @@ public class InstructorServiceImplementation implements InstructorService {
      */
     @Override
     public void deleteInstructor(Long id) {
-        logger.info("Deleting instructor with ID: {}", id);
-        instructorRepository.deleteById(id);
+        logger.info("Soft deleting instructor with ID: {}", id);
+        Instructor instructor = instructorRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Instructor not found with ID: " + id));
+        instructor.setDeletedAt(LocalDateTime.now());
+        instructorRepository.save(instructor);
     }
 
     /**
