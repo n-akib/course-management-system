@@ -12,7 +12,7 @@ import java.util.List;
  * including its title, description, dates, instructor, and enrolled students.
  */
 @Entity
-@Table(name = "courses")
+@Table(name = "courses", schema = "cms")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -61,6 +61,7 @@ public class Course {
     @ManyToMany
     @JoinTable(
             name = "course_student",
+            schema = "cms",
             joinColumns = @JoinColumn(name = "course_id"),
             inverseJoinColumns = @JoinColumn(name = "student_id")
     )

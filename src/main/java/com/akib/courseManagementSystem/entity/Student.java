@@ -12,7 +12,7 @@ import java.util.List;
  * including their name, email, and the courses they are enrolled in.
  */
 @Entity
-@Table(name = "students")
+@Table(name = "students", schema = "cms")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
