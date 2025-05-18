@@ -3,6 +3,7 @@ package com.akib.courseManagementSystem.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +36,12 @@ public class Student {
      */
     @Column(unique = true, nullable = false)
     private String email;
+
+    /** Added deleted_at column for soft delete
+     *
+     */
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
 
     /**
      * List of courses the student is enrolled in.

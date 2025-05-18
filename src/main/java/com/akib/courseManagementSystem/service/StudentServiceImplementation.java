@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -81,10 +82,17 @@ public class StudentServiceImplementation implements StudentService {
     /**
      * {@inheritDoc}
      */
+    /** Changed to soft delete by setting deletedAt
+     *
+     * @param id the ID of the student to delete.
+     */
     @Override
     public void deleteStudent(Long id) {
-        logger.info("Deleting student with ID: {}", id);
-        studentRepository.deleteById(id);
+        logger.info("Soft deleting student with ID: {}", id);
+        Student student = studentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Student not found with ID: " + id));
+        student.setDeletedAt(LocalDateTime.now());
+        studentRepository.save(student);
     }
 
     /**

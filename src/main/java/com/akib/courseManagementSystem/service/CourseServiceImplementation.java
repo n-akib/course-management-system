@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime; // Added for deletedAt
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -100,9 +101,12 @@ public class CourseServiceImplementation implements CourseService {
      */
     @Override
     public void deleteCourse(Long id) {
-        logger.info("Deleting course with ID: {}", id);
-        // Delete course from the database
-        courseRepository.deleteById(id);
+        // Changed to soft delete by setting deletedAt
+        logger.info("Soft deleting course with ID: {}", id);
+        Course course = courseRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Course not found with ID: " + id));
+        course.setDeletedAt(LocalDateTime.now());
+        courseRepository.save(course);
     }
 
     /**

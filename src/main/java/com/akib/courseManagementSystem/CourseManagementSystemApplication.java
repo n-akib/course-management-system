@@ -10,7 +10,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication
 public class CourseManagementSystemApplication {
-
 	/**
 	 * The main method that starts the Spring Boot application.
 	 *
@@ -21,3 +20,6 @@ public class CourseManagementSystemApplication {
 		SpringApplication.run(CourseManagementSystemApplication.class, args);
 	}
 }
+
+
+

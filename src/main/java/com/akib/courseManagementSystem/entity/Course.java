@@ -3,6 +3,7 @@ package com.akib.courseManagementSystem.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime; // Added for deletedAt
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +45,12 @@ public class Course {
      * The end date of the course.
      */
     private LocalDate endDate;
+
+    /** Added deleted_at column for soft delete
+     *
+     */
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
 
     /**
      * The instructor assigned to teach the course.
