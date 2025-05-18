@@ -1,8 +1,9 @@
-package com.akib.courseManagementSystem.service;
+package com.akib.courseManagementSystem.serviceIMPL;
 
 import com.akib.courseManagementSystem.dto.StudentDTO;
 import com.akib.courseManagementSystem.entity.Student;
 import com.akib.courseManagementSystem.repository.StudentRepository;
+import com.akib.courseManagementSystem.service.StudentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

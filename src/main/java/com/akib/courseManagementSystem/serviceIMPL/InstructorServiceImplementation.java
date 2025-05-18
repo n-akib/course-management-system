@@ -1,15 +1,15 @@
-package com.akib.courseManagementSystem.service;
+package com.akib.courseManagementSystem.serviceIMPL;
 
 import com.akib.courseManagementSystem.dto.InstructorDTO;
 import com.akib.courseManagementSystem.entity.Instructor;
 import com.akib.courseManagementSystem.repository.InstructorRepository;
+import com.akib.courseManagementSystem.service.InstructorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional; // Required for Optional
 import java.util.stream.Collectors;
 
 /**

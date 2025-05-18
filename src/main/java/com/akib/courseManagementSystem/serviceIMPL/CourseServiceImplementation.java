@@ -1,4 +1,4 @@
-package com.akib.courseManagementSystem.service;
+package com.akib.courseManagementSystem.serviceIMPL;
 
 import com.akib.courseManagementSystem.dto.CourseDTO;
 import com.akib.courseManagementSystem.dto.StudentDTO;
@@ -8,6 +8,7 @@ import com.akib.courseManagementSystem.entity.Student;
 import com.akib.courseManagementSystem.repository.CourseRepository;
 import com.akib.courseManagementSystem.repository.InstructorRepository;
 import com.akib.courseManagementSystem.repository.StudentRepository;
+import com.akib.courseManagementSystem.service.CourseService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
