@@ -2,6 +2,7 @@ package com.akib.courseManagementSystem.controller;
 
 import com.akib.courseManagementSystem.dto.InstructorDTO;
 import com.akib.courseManagementSystem.service.InstructorService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,8 +43,10 @@ public class InstructorController {
      * @return ResponseEntity containing a list of InstructorDTOs with HTTP status 200 (OK).
      */
     @GetMapping
-    public ResponseEntity<List<InstructorDTO>> getAllInstructors() {
-        return ResponseEntity.ok(instructorService.getAllInstructors());
+    public ResponseEntity<Page<InstructorDTO>> getAllInstructors(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(instructorService.getAllInstructors(page, size));
     }
 
     /**

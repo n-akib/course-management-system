@@ -6,6 +6,9 @@ import com.akib.courseManagementSystem.repository.InstructorRepository;
 import com.akib.courseManagementSystem.service.InstructorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -49,11 +52,11 @@ public class InstructorServiceImplementation implements InstructorService {
      * {@inheritDoc}
      */
     @Override
-    public List<InstructorDTO> getAllInstructors() {
-        logger.info("Fetching all instructors");
-        return instructorRepository.findAll().stream()
-                .map(this::toDTO)
-                .collect(Collectors.toList());
+    public Page<InstructorDTO> getAllInstructors(int page, int size) {
+        logger.info("Fetching instructors for page: {}, size: {}", page, size);
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Instructor> instructorPage = instructorRepository.findAll(pageable);
+        return instructorPage.map(this::toDTO);
     }
 
     /**

@@ -4,6 +4,8 @@ import com.akib.courseManagementSystem.dto.InstructorDTO;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page; // Added for pagination
+
 /**
  * Service interface for managing instructor-related operations.
  * Provides methods for creating, retrieving, updating, and deleting instructors.
@@ -23,7 +25,15 @@ public interface InstructorService {
      *
      * @return A list of InstructorDTOs.
      */
-    List<InstructorDTO> getAllInstructors();
+    //List<InstructorDTO> getAllInstructors();
+
+    /** Updated to return a Page for pagination
+     *
+     * @param page
+     * @param size
+     * @return
+     */
+    Page<InstructorDTO> getAllInstructors(int page, int size);
 
     /**
      * Retrieves a specific instructor by ID.
